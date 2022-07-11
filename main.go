@@ -11,29 +11,34 @@ import (
 
 func main() {
 	var board [15][15]string
-	gameOver := false
+
 	util.Splash()
 
-	for !gameOver {
-		fmt.Print("  PLAYER 1 ○\n" +
-			"  ----------\n")
-		play("p1", &board)
+	util.PrintBoard(board)
+
+	// need to set current player, initialize with P1
+	player := "PLAYER 1"
+
+	// loop through single play, check for win condition and if it returns true,
+	// set break the loop and let main() continue
+	// otherwise set the new player and restart loop
+
+	for {
+		fmt.Printf("\n  %v\n  -------------------\n", player)
+		play(player, &board)
 		util.PrintBoard(board)
 
 		// check for win condition
-		// checkForWin("p1")
+		// if winner, break
 
-		fmt.Print("  PLAYER 2 ●\n" +
-			"  ----------\n")
-		play("p2", &board)
-		util.PrintBoard(board)
-
-		// check for win condition
-		// checkForWin("p2")
-
+		if player == "PLAYER 1" {
+			player = "PLAYER 2"
+		} else {
+			player = "PLAYER 1"
+		}
 	}
 
-	// fmt.Printf("%v wins! Please play again.\n", winner)
+	// fmt.Printf("  %v wins! Please play again.\n\n", winner)
 
 }
 
@@ -42,9 +47,9 @@ func play(player string, board *[15][15]string) {
 		col, row := getPlayerInput()
 
 		if board[row][col] == "" {
-			if player == "p1" {
+			if player == "PLAYER 1" {
 				board[row][col] = "○"
-			} else if player == "p2" {
+			} else {
 				board[row][col] = "●"
 			}
 			break
