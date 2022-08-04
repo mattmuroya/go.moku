@@ -28,8 +28,10 @@ func main() {
 		play(player, &board)
 		util.PrintBoard(board)
 
-		// check for win condition
-		// if winner, break
+		if checkForWin(board, player) {
+			fmt.Printf("\n  %v wins! Goodbye.\n\n", player)
+			break
+		}
 
 		if player == "PLAYER 1" {
 			player = "PLAYER 2"
@@ -102,6 +104,80 @@ func getPlayerInput() (int, int) {
 
 	fmt.Print("\n  Player input: " + strings.ToUpper(x) + y + "\n\n")
 	return util.IndexOf(x, c), util.IndexOf(y, r)
+}
+
+func checkForWin(board [15][15]string, player string) bool {
+
+	var p string
+
+	if player == "PLAYER 1" {
+		p = "○"
+	} else {
+		p = "●"
+	}
+
+	// check rows
+	for row := 0; row < 15; row++ {
+		for col := 0; col <= 10; col++ {
+			win := true
+			for i := 0; i < 5; i++ {
+				if board[row][col+i] != p {
+					win = false
+				}
+			}
+			if win {
+				return true
+			}
+		}
+	}
+
+	// check cols
+	for col := 0; col < 15; col++ {
+		for row := 0; row <= 10; row++ {
+			win := true
+			for i := 0; i < 5; i++ {
+				if board[row+i][col] != p {
+					win = false
+				}
+			}
+			if win {
+				return true
+			}
+		}
+	}
+
+	// check diagonals (top left to bottom right)
+	for col := 0; col <= 10; col++ {
+		for row := 0; row <= 10; row++ {
+			win := true
+			for i := 0; i < 5; i++ {
+				if board[row+i][col+i] != p {
+					win = false
+				}
+			}
+			if win {
+				return true
+			}
+		}
+	}
+
+	// check diagonals (bottom left to top right)
+	for col := 0; col <= 10; col++ {
+		for row := 14; row >= 4; row-- {
+			win := true
+			for i := 0; i < 5; i++ {
+				if board[row-i][col+i] != p {
+					win = false
+				}
+			}
+			if win {
+				return true
+			}
+		}
+	}
+
+	// if no win
+	return false
 }
 
 // "15  · · · · · · · · · · · · · · ·\n" +
