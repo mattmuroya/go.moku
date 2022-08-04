@@ -1,3 +1,3 @@
 # go.moku
 
-gomoku but it's written in go
+gomoku but it's a command line app written in go.
